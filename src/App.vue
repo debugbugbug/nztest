@@ -1,32 +1,50 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+  <div>
+    <tabbar v-show="isTabbarShow"></tabbar>
+    <!-- 路由容器(基于slot的封装) -->
+    <transition name="app" mode="out-in">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
-
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+<script>
+import tabbar from '@/components/Tabbar'
+import { mapState } from 'vuex'
+export default {
+  mounted () {
+    console.log(this.isTabbarShow)
+  },
+  components: {
+    tabbar
+  },
+  computed: {
+    // 从tabbar命名空间中直接找 isTabbarShow
+    ...mapState('tabbar', ['isTabbarShow'])
   }
 }
+</script>
+<style lang="scss">
+  *{
+    padding: 0;
+    margin: 0;
+  }
+  ul{
+    list-style: none;
+  }
+  .app-enter-active{
+    animation: aaa .5s;
+  }
+  .app-leave-active{
+    animation: aaa .5s reverse;
+  }
+  @keyframes aaa{
+    0%{
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    100%{
+      opacity: 1;
+      transform: translateY(0%)
+    }
+  }
 </style>
